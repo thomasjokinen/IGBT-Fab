@@ -7,7 +7,7 @@ This project was to design an IGBT for fabrication. Fabrication steps were colla
 This project was created to learn about the fab process and gain experience in the clean room.
 
 ![Alt text](http://files.1337upload.net/Device_Post_Nplus-9cc9f3.png "Half-Adder after n+ implantation")
-This is a picture of the substrate while it was being designed.  This is the Half-Adder created with 5 NOR gates, with PMOS on the left and NMOS on the right. 
+This is a picture of the substrate while it was being designed.  This is the Half-Adder created with 5 NOR gates, with PMOS on the left and NMOS on the right. This image is after n+ implantation.
 
 ## Installation
 
@@ -67,8 +67,3 @@ A: 	So since we have a range of initial concentrations there are files for the h
 
 
 ------------------------------------------------------------------------------
-
-Thanks for reading,
-Thomas
-
-
