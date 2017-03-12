@@ -1,0 +1,72 @@
+#IGBT - Collector Sweep at specified Gate Voltages for Low initial Concentration(lowC)
+#
+#This Atlas run expects raw Athena structures
+#
+
+go athena
+
+init infile=STEP_30_lowC.str
+
+electrode name=GATE X=5 Y=-0.5 
+electrode name=EMITTER X=45 Y=-0.5 
+electrode name=COLLECTOR bottom 
+
+structure outfile=ATLAS_0_lowC.str
+#tonyplot ATLAS_0_lowC.str
+
+go atlas
+
+mesh infile=ATLAS_0_lowC.str
+
+#SET INITIAL CONDITIONS ###############################################
+models conmob fldmob cvt srh fermi bgn
+
+solve  init
+output charge
+method newton
+structure outfile=ATLAS_1_lowC.str
+#tonyplot ATLAS_1_lowC.str 
+
+
+# Vge increased from 0 up to Vge=10.0 V ################################
+solve    vgate=0.0 	outf=ATLAS_VG0_lowC.str 	master
+solve    vgate=5.0  	outf=ATLAS_VG5_lowC.str 	master
+solve    vgate=10.0 	outf=ATLAS_VG10_lowC.str 	master
+solve    vgate=20.0 	outf=ATLAS_VG20_lowC.str 	master
+
+
+# Vge=0.0 V ############################################################
+# Vce increased from 0.1 up to Vce=40. V
+log      outf=ATLAS_LOG_GS0_lowC.log master
+load     inf=ATLAS_VG0_lowC.str master
+solve    vcollector=0 	vstep=.5 	vfinal=5  	name=COLLECTOR
+solve    vcollector=6.0 	vstep=1.0  	vfinal=40.0 	name=COLLECTOR
+
+
+# Vge=5.0 V ############################################################
+# Vce increased from 0. up to Vce=40. V
+log      outf=ATLAS_LOG_GS5_lowC.log 		master
+load     inf=ATLAS_VG5_lowC.str 			master
+solve    vcollector=0 	vstep=.5  	vfinal=5  	name=COLLECTOR
+solve    vcollector=6.0 	vstep=1.0  	vfinal=40.0 	name=COLLECTOR
+
+
+# Vge=10.0 V ###########################################################
+# Vce increased from 0.1 up to Vce=40. V
+log      outf=ATLAS_LOG_GS10_lowC.log 		master
+load     inf=ATLAS_VG10_lowC.str 			master
+solve    vcollector=0 	vstep=.5  	vfinal=5  	name=COLLECTOR
+solve    vcollector=6.0 	vstep=1.0  	vfinal=40.0 	name=COLLECTOR
+
+
+# Vge=20.0 V ###########################################################
+# Vce increased from 0.1 up to Vce=40. V
+log      outf=ATLAS_LOG_GS20_lowC.log 		master
+load     inf=ATLAS_VG20_lowC.str 			master
+solve    vcollector=0 	vstep=.5  	vfinal=5  	name=COLLECTOR
+solve    vcollector=6.0 	vstep=1.0  	vfinal=40.0 	name=COLLECTOR
+
+save     outf=ATLAS_1_lowC.str 			master
+
+tonyplot -overlay ATLAS_LOG_GS0_lowC.log ATLAS_LOG_GS5_lowC.log ATLAS_LOG_GS10_lowC.log  ATLAS_LOG_GS20_lowC.log  
+quit

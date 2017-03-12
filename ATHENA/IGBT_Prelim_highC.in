@@ -1,0 +1,256 @@
+#IGBT - Preliminary Structure, High initial Concentration(highC) with High Quality Grid 
+#
+#This Athena structure should be ran first before any runs of the Atlas calculations
+#
+
+go athena
+
+#####Set the Dimensions#####
+line x loc=0 spac=1
+line x loc=10 spac=.1
+line x loc=20 spac=.1
+line x loc=30 spac=.1
+line x loc=40 spac=.1
+line x loc=50 spac=1
+
+line y loc=0 spac=.01
+line y loc=1 spac=.02
+line y loc=4 spac=.1
+line y loc=5 spac=.5
+line y loc=20 spac=5
+
+
+#####Set the initial definitions of the wafer#######################################STEP 1###########
+#High Initial Concentration .5-1 ohm cm
+init orientation=100 c.boron=3.31e16 
+
+structure outfile=STEP_01_highC.str
+#tonyplot STEP_01_highC.str 
+
+#####Build First Oxide Layer########################################################STEP 2###########
+diffuse time=10 t.start=800 t.rate=20 dryo2
+diffuse time=10 temp=1000 dryo2
+diffuse time=45 temp=1000 weto2
+diffuse time=10 temp=1000 dryo2
+diffuse time=10 temp=1000 nitro
+diffuse time=10 t.start=1000 t.rate=-20 nitro
+
+structure outfile=STEP_02_highC.str
+#tonyplot STEP_02_highC.str 
+
+#####Photolitho Mask 1###############################################################STEP 3##########
+deposit photoresist thick=1.3 div=5
+etch photoresist start 	x=10 y=-20
+etch continue 		x=10 y=70
+etch continue			x=40 y=70
+etch done			x=40 y=-20
+
+structure outfile=STEP_03_highC.str
+#tonyplot STEP_03_highC.str 
+
+#####Etch the Oxide##################################################################STEP 4##########
+etch oxide dry
+
+structure outfile=STEP_04_highC.str
+#tonyplot STEP_04_highC.str 
+
+#####Ion Implatation#################################################################STEP 5##########
+implant phos dose=5e13 energy=170 pearson
+
+structure outfile=STEP_05_highC.str
+#tonyplot STEP_05_highC.str 
+
+#####Strip the Photoresist###########################################################STEP 6##########
+etch photoresist
+
+structure outfile=STEP_06_highC.str
+#tonyplot STEP_06_highC.str 
+
+
+#####Build Second Oxide Layer/Diffusion of the N-well################################STEP 7##########
+#############TIMES WILL BE MODIFIED################
+diffuse time=15 t.start=800 t.rate=20 dryo2
+diffuse time=20 temp=1100 dryo2
+diffuse time=600 temp=1100 nitro
+diffuse time=15 t.start=1100 t.rate=-20 nitro
+
+structure outfile=STEP_07_highC.str
+#tonyplot STEP_07_highC.str 
+
+#####Photolith Mask 2################################################################STEP 8##########
+
+deposit photoresist thick=1.3 div=5
+etch photoresist start 	x=15 y=-20
+etch continue 		x=15 y=70
+etch continue			x=35 y=70
+etch done			x=35 y=-20
+
+structure outfile=STEP_08_highC.str
+#tonyplot STEP_08_highC.str 
+
+#####Etch the Oxide##################################################################STEP 9##########
+etch oxide dry
+
+structure outfile=STEP_09_highC.str
+#tonyplot STEP_09_highC.str 
+
+#####Strip the Photoresist###########################################################STEP 10#########
+etch photoresist
+
+structure outfile=STEP_10_highC.str
+#tonyplot STEP_10_highC.str 
+
+#####Build Gate Oxide################################################################STEP 11#########
+
+diffuse time=10 t.start=800 t.rate=20 nitro
+diffuse time=15 temp=1000 dryo2
+diffuse time=10 t.start=1000 t.rate=-20 nitro
+
+structure outfile=STEP_11_highC.str
+#tonyplot STEP_11_highC.str
+
+#####Deposit Polysilicon#############################################################STEP 12#########
+depo poly thick=0.5 div=5
+
+structure outfile=STEP_12_highC.str
+#tonyplot STEP_12_highC.str 
+
+
+#####Photolith Process###############################################################STEP 13#########
+deposit photoresist thick=1.3 div=5
+
+etch photoresist start 	x=0 y=-20
+etch continue 		x=0 y=70
+etch continue			x=15 y=70
+etch done	 		x=15 y=-20
+
+etch photoresist start	x=23 y=-20
+etch continue			x=23 y=70
+etch continue 		x=50 y=70
+etch done			x=50 y=-20
+
+etch poly
+
+structure outfile=STEP_13_highC.str
+#tonyplot STEP_13_highC.str 
+
+#####Strip PR########################################################################STEP 14#########
+strip photoresist
+
+structure outfile=STEP_14_highC.str
+#tonyplot STEP_14_highC.str 
+
+#####Litho Mask 4####################################################################STEP 15#########
+deposit photoresist thick=1.3 div=5
+#usually 23
+etch photoresist start 	x=23 y=-20
+etch continue 		x=23 y=70
+etch continue			x=29 y=70
+etch done	 		x=29 y=-20
+
+structure outfile=STEP_15_highC.str
+#tonyplot STEP_15_highC.str 
+
+#####Ion Implatation#################################################################STEP 17#########
+implant arsenic dose=1e15 energy=90 pearson
+
+structure outfile=STEP_17_highC.str
+#tonyplot STEP_17_highC.str 
+
+#####Strip Photoresist###############################################################STEP 18#########
+etch photoresist
+
+structure outfile=STEP_18_highC.str
+#tonyplot STEP_18_highC.str 
+
+#####Litho Mask 5####################################################################STEP 19#########
+deposit photoresist thick=1.3 div=5
+#usually 23
+etch photoresist start 	x=17 y=-20
+etch continue 		x=17 y=70
+etch continue			x=33 y=70
+etch done	 		x=33 y=-20
+
+structure outfile=STEP_19_highC.str
+#tonyplot STEP_19_highC.str 
+
+#####Ion Implatation#################################################################STEP 21#########
+implant boron dose=8.5e14 energy=125 pearson
+
+structure outfile=STEP_21_highC.str
+#tonyplot STEP_21_highC.str 
+
+#####Strip Photoresist###############################################################STEP 22#########
+etch photoresist
+
+structure outfile=STEP_22_highC.str
+#tonyplot STEP_22_highC.str 
+
+#####Build Contact Oxide and Diffuse ################################################STEP 23#########
+diffuse time=15 t.start=800 t.rate=20 dryo2
+diffuse time=10 temp=1100 dryo2
+diffuse time=30 temp=1100 weto2
+diffuse time=20 temp=1100 dryo2
+diffuse time=60 temp=1100 nitro
+diffuse time=15 t.start=1100 t.rate=-20 nitro
+
+structure outfile=STEP_23_highC.str
+#tonyplot STEP_23_highC.str 
+
+#####Litho 6-Contact Windows#########################################################STEP 24#########
+deposit photoresist thick=1.3 div=5
+####Contact for the Poly
+etch photoresist start 	x=16.5 y=-20
+etch continue 		x=16.5 y=70
+etch continue			x=21.5 y=70
+etch done	 		x=21.5 y=-20
+####Contact for the aluminum
+etch photoresist start 	x=28 y=-20
+etch continue 		x=28 y=70
+etch continue			x=33 y=70
+etch done	 		x=33 y=-20
+
+structure outfile=STEP_24_highC.str
+#tonyplot STEP_24_highC.str 
+
+#####Etch SiO2#######################################################################STEP 25#########
+etch oxide dry thick=.55
+
+structure outfile=STEP_25_highC.str
+#tonyplot STEP_25_highC.str 
+
+#####Strip Photoresist###############################################################STEP 26#########
+etch photoresist
+
+structure outfile=STEP_26_highC.str
+#tonyplot STEP_26_highC.str 
+
+#####Strip Photoresist###############################################################STEP 27#########
+deposit alumin thick=0.5
+
+structure outfile=STEP_27_highC.str
+#tonyplot STEP_27_highC.str 
+
+#####Litho 7-Aluminum################################################################STEP 28#########
+deposit photoresist thick=1.3 div=5
+etch photoresist start 	x=23 y=-20
+etch continue 		x=23 y=70
+etch continue			x=28 y=70
+etch done	 		x=28 y=-20
+
+structure outfile=STEP_28_highC.str
+#tonyplot STEP_28_highC.str 
+
+#####Etch Aluminum###################################################################STEP 29#########
+etch aluminum thick=0.5
+
+structure outfile=STEP_29_highC.str
+#tonyplot STEP_29_highC.str 
+
+#####Strip Photoresist###############################################################STEP 30#########
+etch photoresist
+
+structure outfile=STEP_30_highC.str
+tonyplot STEP_30_highC.str 
+
+quit
